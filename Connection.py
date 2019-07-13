@@ -123,6 +123,7 @@ class ExchangeConnection:
                             break
         if self.counter % 30 == 0:
             print(self.holdings)
+            print(self.current_orders)
         return data
 
         # else:
