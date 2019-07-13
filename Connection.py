@@ -1,5 +1,6 @@
 import json
 import socket
+
 import numpy as np
 
 
@@ -61,8 +62,8 @@ class ExchangeConnection:
             buy = np.array([[0, 0]])
         if sell.shape[0] == 0:
             sell = np.array([[0, 0]])
-        delta_t_now = np.dot(buy[:,0], buy[:,1]) - np.dot(sell[:,0], sell[:,1])
-        t = np.average([np.average(buy[:,0][:10]), np.average(sell[:,0][:10])])
+        delta_t_now = np.dot(buy[:, 0], buy[:, 1]) - np.dot(sell[:, 0], sell[:, 1])
+        t = np.average([np.average(buy[:, 0][:10]), np.average(sell[:, 0][:10])])
         if type in self.t_now:
             self.t_now[type].append(t)
         else:
@@ -97,7 +98,7 @@ class ExchangeConnection:
                     for index, order in enumerate(self.current_orders):
                         id, buysell, symbol, price, size = order
                         if data["order_id"] == id:
-                            self.current_orders[id] -= data["size"]
+                            self.current_orders[index][4] -= data["size"]
                             break
                 elif msg_type == "trade":
                     self.trade_prices[data["symbol"]] = data["price"]
@@ -140,7 +141,7 @@ class ExchangeConnection:
             buysell, symbol, price, size = args
             trade = {'type': 'add', 'order_id': self.order_id, 'symbol': symbol,
                      'dir': buysell, 'price': price, 'size': size}
-            self.sent_orders[self.order_id] = (self.order_id, buysell, symbol, price, size)
+            self.sent_orders[self.order_id] = [self.order_id, buysell, symbol, price, size]
             self.order_id += 1
             # print(trade)
             self.write(trade)
@@ -164,5 +165,3 @@ class ExchangeConnection:
         self.order_id += 1
         # print(trade)
         self.write(trade)
-    
-    
