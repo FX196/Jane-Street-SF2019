@@ -83,6 +83,7 @@ class ExchangeConnection:
                         if data["order_id"] == id:
                             self.current_orders.pop(index)
                             break
+
         return data
 
         # else:
