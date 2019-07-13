@@ -1,5 +1,4 @@
-import numpy as np 
-from ..stats import *
+from strategies.stats import *
 
 def trade(exchange):
     data = exchange.last_data

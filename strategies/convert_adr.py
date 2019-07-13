@@ -1,4 +1,4 @@
-from ..stats import *
+from strategies.stats import *
 
 
 def trade(exchange):
