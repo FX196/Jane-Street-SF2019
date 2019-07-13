@@ -25,21 +25,25 @@ def trade(exchange):
             print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
             # # for bot
-            # if ema > 0 and total_trade[stock][-1] > average + stand_dev * 0.2 and current_holding[stock] > 0:
-            #     trades.append(('SELL', stock, int(average + stand_dev * 0.6), current_holding[stock]))
-            # elif ema > 0 and total_trade[stock][-1] < average - stand_dev * 0.2: 
-            #     trades.append(('BUY', stock, int(average - stand_dev * 0.4), 100))
+            if ema > 0 and total_trade[stock][-1] > average + stand_dev and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
+                trades.append(('SELL', stock, int(average + stand_dev * 0.6), current_holding[stock]))
+            elif ema > 0 and total_trade[stock][-1] > average + stand_dev * 0.2 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
+                trades.append(('SELL', stock, int(average + stand_dev * 0.6), current_holding[stock] // 2))
+            elif ema > 0 and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 0.2: 
+                trades.append(('BUY', stock, int(average - stand_dev * 0.4), 100))
+            elif ema > 0 and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev: 
+                trades.append(('BUY', stock, int(average - stand_dev * 1.1), 200))    
 
-            # # sell strategies#
-            if ema > 0 and total_trade[stock][-1] > average + stand_dev * 1.1 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
-                trades.append(('SELL', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock]))
-            elif ema > 0 and total_trade[stock][-1] > average + stand_dev * 0.5 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
-                trades.append(('SELL', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock] // 2))
+            # # # sell strategies#
+            # if ema > 0 and total_trade[stock][-1] > average + stand_dev * 1.1 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
+            #     trades.append(('SELL', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock]))
+            # elif ema > 0 and total_trade[stock][-1] > average + stand_dev * 0.5 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
+            #     trades.append(('SELL', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock] // 2))
             
-            elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 1.1: 
-                trades.append(('BUY', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[stock][-1], 200))
-            elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 0.5: 
-                trades.append(('BUY', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[stock][-1], 100))
+            # elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 1.1: 
+            #     trades.append(('BUY', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[stock][-1], 200))
+            # elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 0.5: 
+            #     trades.append(('BUY', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[stock][-1], 100))
     # if data['type'] == 'book' and data['symbol'] == 'BOND':
     #     bids = data['buy']
     #     for price, size in bids:
