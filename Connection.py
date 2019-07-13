@@ -67,8 +67,8 @@ class ExchangeConnection:
         if sell.shape[0] == 0:
             sell = np.array([[0, 0]])
         delta_t_now = np.dot(buy[:, 0], buy[:, 1]) - np.dot(sell[:, 0], sell[:, 1])
-        buy_weighted = np.dot(buy[:, 0], buy[:, 1]/(np.sum(buy[:, 1])))
-        sell_weighted = np.dot(sell[:, 0], sell[:, 1]/(np.sum(sell[:, 1])))
+        buy_weighted = np.dot(buy[:, 0], buy[:, 1]/(np.sum(buy[:, 1])+0.0001))
+        sell_weighted = np.dot(sell[:, 0], sell[:, 1]/(np.sum(sell[:, 1])+0.0001))
         t = np.average([buy_weighted, sell_weighted])
         # t = np.average([np.average(buy[:, 0][:10]), np.average(sell[:, 0][:10])])
         if type in self.t_now:
