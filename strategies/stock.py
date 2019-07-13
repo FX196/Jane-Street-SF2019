@@ -12,7 +12,7 @@ def trade(exchange):
 
     for stock in stocks: 
         if data['type'] == 'book' and data['symbol'] == stock:
-            if len(delta_t_history[stock]) < 300 or len(total_trade[stock]) < 300:
+            if len(delta_t_history[stock]) < 100 or len(total_trade[stock]) < 100:
                 break
             # comment out the following two
             tradeOp_gradient = np.gradient(delta_t_history[stock])[-1] # > 0 when concave up
@@ -37,7 +37,7 @@ def trade(exchange):
             print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
             # # for bot
-            if (value_gradient < 0 or tradeOp_gradient < 0)  and total_trade[stock][-1] > average + stand_dev*f1 and current_holding[stock] > 0:
+            if (value_gradient < 0 or tradeOp_gradient < 0) or total_trade[stock][-1] > average + stand_dev*f1 and current_holding[stock] > 0:
                 if current_holding[stock] %2 == 1: 
                     trades.append(('SELL', stock, int(average + stand_dev*d1), 1))    
                     current_holding[stock] -= 1
@@ -46,7 +46,7 @@ def trade(exchange):
                     current_holding[stock] -= 2
                 if current_holding[stock] == 0:
                     buy_price[stock] = -1 
-            elif (value_gradient < 0 or tradeOp_gradient < 0) and total_trade[stock][-1] > average and current_holding[stock] > 0:
+            elif (value_gradient < 0 or tradeOp_gradient < 0) or total_trade[stock][-1] > average and current_holding[stock] > 0:
                 if current_holding[stock] == 1: 
                     trades.append(('SELL', stock, int(average), 1))    
                     current_holding[stock] -= 1
