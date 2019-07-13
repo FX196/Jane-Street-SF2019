@@ -94,12 +94,12 @@ class ExchangeConnection:
                     if len(self.current_orders) > self.max_orders:
                         # cancel if too many orders
                         self.cancel(self.current_orders[0][0])
-                # elif msg_type == "fill":
-                #     for index, order in enumerate(self.current_orders):
-                #         id, buysell, symbol, price, size = order
-                #         if data["order_id"] == id:
-                #             self.current_orders[id][4] -= data["size"]
-                #             break
+                elif msg_type == "fill":
+                    for index, order in enumerate(self.current_orders):
+                        id, buysell, symbol, price, size = order
+                        if data["order_id"] == id:
+                            self.current_orders[index][4] -= data["size"]
+                            break
                 elif msg_type == "trade":
                     self.trade_prices[data["symbol"]] = data["price"]
                 elif msg_type == "out":
@@ -141,7 +141,7 @@ class ExchangeConnection:
             buysell, symbol, price, size = args
             trade = {'type': 'add', 'order_id': self.order_id, 'symbol': symbol,
                      'dir': buysell, 'price': price, 'size': size}
-            self.sent_orders[self.order_id] = (self.order_id, buysell, symbol, price, size)
+            self.sent_orders[self.order_id] = [self.order_id, buysell, symbol, price, size]
             self.order_id += 1
             # print(trade)
             self.write(trade)
