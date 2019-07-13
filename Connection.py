@@ -57,6 +57,7 @@ class ExchangeConnection:
     def record(self, type):
         book = self.latest_books
         buy, sell = np.array(book[type][0]), np.array(book[type][1])
+        print(buy)
         delta_t_now = np.dot(buy[:,0], buy[:,1]) - np.dot(sell[:,0], sell[:,1])
         t = np.average([np.average(buy[:,0][:10]), np.average(sell[:,0][:10])])
         if type in self.t_now:
