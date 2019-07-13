@@ -130,7 +130,6 @@ class ExchangeConnection:
             print(self.holdings)
             print(self.current_orders)
             print(self.sent_orders)
-            print(self.trade_prices)
         return data
 
         # else:
