@@ -13,6 +13,9 @@ def trade(exchange):
     ori_estimate = EMA(ori_newest)
     adr_estimate = EMA(adr_newest)
 
+    if exchange.counter % 100 != 0:
+        return []
+
     diff = adr_estimate - ori_estimate
     if diff > 0:
         size = int((diff / 0.1) * 2)
