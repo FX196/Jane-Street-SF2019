@@ -34,7 +34,7 @@ class ExchangeConnection:
         self.filled_orders = []
         self.current_orders = []
         self.sent_orders = {}
-        self.max_orders = 10
+        self.max_orders = 25
 
         self.order_id = 1
         self.latest_books = {
