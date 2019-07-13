@@ -16,12 +16,12 @@ def trade(exchange):
     diff = adr_estimate - ori_estimate
     if diff > 0:
         size = (diff / 0.1) * 2
-        trades.append(("BUY", "VALBZ", ori_estimate + 1, size))
+        trades.append(("BUY", "VALBZ", int(ori_estimate + 1), size))
         trades.append(("CONVERT", "BUY", "VALE", size))
-        trades.append(("SELL", "VALE", adr_estimate - 1, size))
+        trades.append(("SELL", "VALE", int(adr_estimate - 1), size))
     elif diff < 0:
         size = (-diff / 0.1) * 2
-        trades.append(("SELL", "VALBZ", ori_estimate + 1, size))
+        trades.append(("SELL", "VALBZ", int(ori_estimate + 1), size))
         trades.append(("CONVERT", "SELL", "VALE", size))
-        trades.append(("BUY", "VALE", adr_estimate - 1, size))
+        trades.append(("BUY", "VALE", int(adr_estimate - 1), size))
     return trades
