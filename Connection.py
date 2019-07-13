@@ -42,14 +42,15 @@ class ExchangeConnection:
             "WFC": [None, None],
             "XLF": [None, None]
         }
+
         self.trade_prices = {
-            "BOND": None,
-            "VALBZ": None,
-            "VALE": None,
-            "GS": None,
-            "MS": None,
-            "WFC": None,
-            "XLF": None
+            "BOND": [],
+            "VALBZ": [],
+            "VALE": [],
+            "GS": [],
+            "MS": [],
+            "WFC": [],
+            "XLF": []
         }
         self.time = 0
         self.delta_t = {}
