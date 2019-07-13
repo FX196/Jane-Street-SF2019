@@ -54,6 +54,22 @@ class ExchangeConnection:
         self.delta_t = {}
         self.t_now = {}
 
+    def record(self, type):
+        book = self.latest_books
+        buy, sell = np.array(book[type][0]), np.array(book[type][1])
+        delta_t_now = np.dot(buy[:,0], buy[:,1]) - np.dot(sell[:,0], sell[:,1])
+        t = np.average(np.average(buy[:,0][:10]), np.average(sell[:,0][:10]))
+        if type in self.t_now:
+            self.t_now[type].append(t)
+        else:
+            self.t_now[type] = [t]
+        if type in self.delta_t:
+            self.delta_t[type].append(delta_t_now)
+        else:
+            self.delta_t[type] = [delta_t_now]
+        history = {"delta_t": self.delta_t, "t": self.t}
+        np.save("./data/history.npy", history)
+
     def read(self, store_last=True):  # read from exchange
         data_str = self.stream.readline()
         if data_str == "":
@@ -65,7 +81,7 @@ class ExchangeConnection:
                 msg_type = data["type"]
                 if msg_type == "book":
                     self.latest_books[data["symbol"]] = [data["buy"], data["sell"]]
-                    record(data["symbol"])
+                    self.record(data["symbol"])
                 elif msg_type == "ack":
                     # accepted, add to current_orders
                     order_id = data["order_id"]
@@ -145,18 +161,4 @@ class ExchangeConnection:
         # print(trade)
         self.write(trade)
     
-    def record(self, type):
-        book = self.latest_books
-        buy, sell = np.array(book[type][0]), np.array(book[type][1])
-        delta_t_now = np.dot(buy[:,0], buy[:,1]) - np.dot(sell[:,0], sell[:,1])
-        t = np.average(np.average(buy[:,0][:10]), np.average(sell[:,0][:10]))
-        if type in self.t_now:
-            self.t_now[type].append(t)
-        else:
-            self.t_now[type] = [t]
-        if type in self.delta_t:
-            self.delta_t[type].append(delta_t_now)
-        else:
-            self.delta_t[type] = [delta_t_now]
-        history = {"delta_t": self.delta_t, "t": self.t}
-        np.save("./data/history.npy", history)
+    
