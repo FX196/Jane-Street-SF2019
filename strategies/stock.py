@@ -27,9 +27,9 @@ def trade(exchange):
                 trades.append(('SELL', stock, total_trade[-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock] // 2))
             
             elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[-1] < average - stand_dev * 1.1: 
-                trades.append(('BUY', stock, total_trade[-1] - tradeOp_gradient * delta_t_history[-1], 100))
-            elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[-1] < average - stand_dev * 0.7: 
                 trades.append(('BUY', stock, total_trade[-1] - tradeOp_gradient * delta_t_history[-1], 200))
+            elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[-1] < average - stand_dev * 0.7: 
+                trades.append(('BUY', stock, total_trade[-1] - tradeOp_gradient * delta_t_history[-1], 100))
     # if data['type'] == 'book' and data['symbol'] == 'BOND':
     #     bids = data['buy']
     #     for price, size in bids:
