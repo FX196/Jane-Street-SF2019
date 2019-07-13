@@ -72,7 +72,7 @@ class ExchangeConnection:
             self.delta_t[type].append(delta_t_now)
         else:
             self.delta_t[type] = [delta_t_now]
-        history = {"delta_t": self.delta_t, "t": self.t_now}
+        history = {"delta_t": self.delta_t, "t_now": self.t_now}
         np.save("./data/history.npy", history)
 
     def read(self, store_last=True):  # read from exchange
