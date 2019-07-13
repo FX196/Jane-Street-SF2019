@@ -106,6 +106,8 @@ class ExchangeConnection:
         for buysell, symbol, price, size in trades:
             if buysell and size != 0:
                 self.trade(buysell, symbol, price, size)
+        if self.order_id % 10 == 0:
+            print(self.current_orders)
 
     def convert(self, buysell, symbol, size):
         trade = {'type': 'convert', 'order_id': self.order_id,
