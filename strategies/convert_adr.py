@@ -3,8 +3,12 @@ from strategies.stats import *
 
 def trade(exchange):
     trades = []
-    ori_newest = exchange.t_now["VALBZ"][-10:]
-    adr_newest = exchange.t_now["VALE"][-10:]
+    try:
+        ori_newest = exchange.t_now["VALBZ"][-10:]
+        adr_newest = exchange.t_now["VALE"][-10:]
+    except:
+        return []
+
 
     ori_estimate = EMA(ori_newest)
     adr_estimate = EMA(adr_newest)
