@@ -13,7 +13,7 @@ class Bot:
     def __init__(self, exchange, strategies):
         self.exchange = exchange
         self.strategies = [import_module(strategy) for strategy in strategies]
-        self.filename = exchange+"_"+str(time.strftime("%H:%M:%S", time.gmtime()))
+        self.filename = "data_"+str(time.strftime("%H:%M:%S", time.gmtime()))
         self.file_obj = open(self.filename, "w")
 
     def run(self):
