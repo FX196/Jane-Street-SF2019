@@ -7,6 +7,7 @@ import numpy as np
 
 class ExchangeConnection:
     def __init__(self, exchange, team_name='ALPHASTOCK'):
+        self.counter = 1
         if exchange in ("0", "1", "2"):
             host_name = "test-exch-alphastock"
             port = 25000 + int(exchange)
@@ -53,8 +54,6 @@ class ExchangeConnection:
             "WFC": [],
             "XLF": []
         }
-
-        self.counter = 0
         self.delta_t = {}
         self.t_now = {}
 
