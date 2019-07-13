@@ -57,10 +57,14 @@ def trade(exchange):
             #     trades.append(('SELL', stock, int(average), current_holding[stock]))
             #     current_holding[stock] = 0
             elif ema < 0 and total_trade[stock][-1] < average - stand_dev * 0.5: 
+                if current_holding[stock] >= 20:
+                    continue
                 trades.append(('BUY', stock, int(average - stand_dev * 0.3), 2))
                 buy_price[stock] = int(average - stand_dev * 0.3)
                 current_holding[stock] += 2
             elif ema < 0 and total_trade[stock][-1] < average - stand_dev: 
+                if current_holding[stock] >= 40:
+                    continue
                 trades.append(('BUY', stock, int(average - stand_dev * 0.9), 2))   
                 buy_price[stock] = int(average - stand_dev * 0.9) 
                 current_holding[stock] += 2
