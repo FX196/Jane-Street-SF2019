@@ -1,6 +1,5 @@
-import socket
 import json
-import time
+import socket
 
 
 class ExchangeConnection:
@@ -26,6 +25,10 @@ class ExchangeConnection:
 
         self.last_data = None
 
+        self.filled_orders = []
+        self.current_orders = []
+        self.sent_orders = {}
+
         self.order_id = 0
         self.latest_books = {
             "BOND": [None, None],
@@ -39,28 +42,44 @@ class ExchangeConnection:
         self.time = 0
 
     def read(self, store_last=True):  # read from exchange
-        data = self.stream.readline()
-        if data == "":
+        data_str = self.stream.readline()
+        if data_str == "":
             return None
         else:
-            data = json.loads(data)
+            data = json.loads(data_str)
             if store_last:
                 self.last_data = data
-                if data["type"] == "book":
-                    #self.latest_books[data["symbol"]][0] = data
-                    self.latest_books[data["symbol"]] = data, self.latest_books[data["symbol"]][0]
-                if data['type'] == "fill":
-                    if data['dir'] == "BUY":
-                        self.holdings[data["symbol"]] += data["size"]
-                        self.holdings["USD"] -= int(data["price"]) * int(data['size'])
-                    elif data['dir'] == "SELL":
-                        self.holdings[data["symbol"]] -= data["size"]
-                        self.holdings["USD"] += int(data["price"]) * int(data['size'])
-                    print(self.holdings)
-                    print("Order", data["order_id"], "filled:", data["dir"], data["size"], data["symbol"], "at price",
-                          data["price"])
-                    print("Current order id", self.order_id)
-            return data
+                msg_type = data["type"]
+                if msg_type == "book":
+                    self.latest_books[data["symbol"]] = [data["buy"], data["sell"]]
+                elif msg_type == "ack":
+                    # accepted, add to current_orders
+                    order_id = data["order_id"]
+                    self.current_orders.append(self.sent_orders.pop(order_id))
+                elif msg_type == "fill":
+                    for order in self.current_orders:
+                        pass
+
+        # else:
+        #     data = json.loads(data)
+        #     if store_last:
+        #         self.last_data = data
+        #         if data["type"] == "book":
+        #             #self.latest_books[data["symbol"]][0] = data
+        #             self.latest_books[data["symbol"]] = data, self.latest_books[data["symbol"]][0]
+        #         if data['type'] == "fill":
+        #             self.filled_orders.append(data)
+        #             if data['dir'] == "BUY":
+        #                 self.holdings[data["symbol"]] += data["size"]
+        #                 self.holdings["USD"] -= int(data["price"]) * int(data['size'])
+        #             elif data['dir'] == "SELL":
+        #                 self.holdings[data["symbol"]] -= data["size"]
+        #                 self.holdings["USD"] += int(data["price"]) * int(data['size'])
+        #             print(self.holdings)
+        #             print("Order", data["order_id"], "filled:", data["dir"], data["size"], data["symbol"], "at price",
+        #                   data["price"])
+        #             print("Current order id", self.order_id)
+        #     return data
 
     def write(self, data):  # write to exchange
         json.dump(data, self.stream)
@@ -76,8 +95,7 @@ class ExchangeConnection:
             self.write(trade)
         else:
             self.convert(*args[1:])
-        if self.order_id > 5000:
-            self.cancel(self.order_id - 5000)
+        self.sent_orders[self.order_id] = ()
 
     def cancel(self, order_id):
         cancel = {'type': 'cancel', 'order_id': order_id}
