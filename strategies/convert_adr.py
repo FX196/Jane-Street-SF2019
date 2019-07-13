@@ -42,7 +42,7 @@ def fair_price_estimate(buy, sell):
 def weighted_mean(a):
     if a is None:
         return None
-    print(a)
+    print(a.shape)
     try:
         return np.sum((a[:, 0] * a[:, 1]) / np.sum(a[:, 1]))
     except:
