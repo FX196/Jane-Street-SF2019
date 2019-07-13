@@ -30,8 +30,12 @@ def trade(exchange):
             
             # # for bot
             if ema > 0 and total_trade[stock][-1] > average + stand_dev*0.5 and current_holding[stock] > 0:
-                trades.append(('SELL', stock, int(average + stand_dev*0.3), 2))
-                current_holding[stock] -= 2
+                if current_holding[stock] == 1: 
+                    trades.append(('SELL', stock, int(average + stand_dev*0.3), 1))    
+                    current_holding[stock] -= 1
+                else:
+                    trades.append(('SELL', stock, int(average + stand_dev*0.3), 2))
+                    current_holding[stock] -= 2
                 if current_holding[stock] == 0:
                     buy_price[stock] = -1 
             
