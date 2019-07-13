@@ -84,6 +84,7 @@ class ExchangeConnection:
     def read(self, store_last=True):  # read from exchange
         self.counter += 1
         data_str = self.stream.readline()
+        str(data_str).strip("'<>() ").replace('\'', '\"')
         if data_str == "":
             return None
         else:
