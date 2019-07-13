@@ -36,7 +36,7 @@ class ExchangeConnection:
         self.sent_orders = {}
         self.max_orders = 10
 
-        self.order_id = 0
+        self.order_id = 1
         self.latest_books = {
             "BOND": [None, None],
             "VALBZ": [None, None],
@@ -86,10 +86,14 @@ class ExchangeConnection:
     def read(self, store_last=True):  # read from exchange
         self.counter += 1
         data_str = self.stream.readline()
+        str(data_str).strip("'<>() ").replace('\'', '\"')
         if data_str == "":
             return None
         else:
-            data = json.loads(data_str)
+            try:
+                data = json.loads(data_str)
+            except ValueError:
+                return None
             if store_last:
                 self.last_data = data
                 msg_type = data["type"]
@@ -166,7 +170,7 @@ class ExchangeConnection:
         for buysell, symbol, price, size in trades:
             if buysell and size != 0:
                 self.trade(buysell, symbol, price, size)
-        if self.order_id and self.order_id % 10 == 0:
+        if self.order_id % 10 == 0:
             print(self.current_orders)
 
     def convert(self, buysell, symbol, size):
