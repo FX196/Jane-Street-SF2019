@@ -88,7 +88,10 @@ class ExchangeConnection:
         if data_str == "":
             return None
         else:
-            data = json.loads(data_str)
+            try:
+                data = json.loads(data_str)
+            except ValueError:
+                return None
             if store_last:
                 self.last_data = data
                 msg_type = data["type"]

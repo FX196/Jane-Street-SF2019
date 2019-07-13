@@ -31,12 +31,13 @@ if __name__ == "__main__":
     strategies = args.strategies.split(',')
     exchange = args.exchange
 
-    print("Using strategies:", strategies)
-    print("Echanging in:", exchange)
+
 
     while True:
         try:
             main(strategies, exchange)
+            print("Using strategies:", strategies)
+            print("Echanging in:", exchange)
         except socket_error as serr:
             if serr.errno != errno.ECONNREFUSED:
                 raise serr
