@@ -13,6 +13,9 @@ def trade(exchange):
     ori_estimate = fair_price_estimate(ori_buy, ori_sell)
     adr_estimate = fair_price_estimate(adr_buy, adr_sell)
 
+    if not ori_estimate or not adr_estimate:
+        return []
+
     if exchange.counter % 100 != 0:
         return []
 
@@ -32,8 +35,11 @@ def trade(exchange):
 def fair_price_estimate(buy, sell):
     buy = np.array(buy)
     sell = np.array(sell)
+    if not weighted_mean(buy) or not weighted_mean(sell):
+        return None
     return (weighted_mean(buy)+weighted_mean(sell))/2
 
 def weighted_mean(a):
-    print(a)
+    if not a:
+        return None
     return np.sum((a[:, 0] * a[:, 1]) / np.sum(a[:, 1]))
