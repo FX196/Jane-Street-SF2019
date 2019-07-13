@@ -1,6 +1,7 @@
+import datetime
 import json
 import socket
-import datetime
+
 import numpy as np
 
 
@@ -78,7 +79,7 @@ class ExchangeConnection:
         np.save("./data/history-{}.npy".format(now.minute), history)
 
     def read(self, store_last=True):  # read from exchange
-        self.time+=1
+        self.time += 1
         data_str = self.stream.readline()
         if data_str == "":
             return None
