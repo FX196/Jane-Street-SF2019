@@ -24,10 +24,10 @@ def trade(exchange):
         size = 1
         trades.append(("BUY", "VALBZ", int(ori_estimate+5), size))
         trades.append(("CONVERT", "BUY", "VALE", size))
-        trades.append(("SELL", "VALE", int(adr_estimate-5), size + exchange.holdings["VALE"]))
+        trades.append(("SELL", "VALE", int(adr_estimate-10), size + exchange.holdings["VALE"]))
     elif diff < 10:
         size = 1
-        trades.append(("SELL", "VALBZ", int(ori_estimate-5), size + exchange.holdings["VALBZ"]))
+        trades.append(("SELL", "VALBZ", int(ori_estimate-10), size + exchange.holdings["VALBZ"]))
         trades.append(("CONVERT", "SELL", "VALE", size))
         trades.append(("BUY", "VALE", int(adr_estimate+5), size))
     return trades
