@@ -27,7 +27,7 @@ def trade(exchange):
             if ema > 0 and total_trade[-1] > average + stand_dev * 0.5 and current_holding[stock] > 0:
                 trades.append(('SELL', stock, int(average + stand_dev * 0.6), current_holding[stock]))
             elif ema > 0 and total_trade[-1] > average - stand_dev * 0.5: 
-                trades.append(('BUY', stock, int(average - stand_dev * 0.4), current_holding[stock]))
+                trades.append(('BUY', stock, int(average - stand_dev * 0.4), 100))
 
             # # sell strategies#
             # if ema > 0 and total_trade[-1] > average + stand_dev * 1.1 and current_holding[stock] > 0 and buy_price[stock] < total_trade[-1]:
