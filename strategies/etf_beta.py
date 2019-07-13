@@ -9,6 +9,8 @@ def trade(exchange):
         xlf = exchange.t_now["XLF"][-1]
     except:
         return []
+    if (len(xlf) % 5 != 0):
+        return []
     if len(bond)<5 or len(gs)<5 or len(ms)<5 or len(wfc)<5:
         return []
     ave = 3 * np.mean(bond[-5:]) + 2 * np.mean(gs[:-5]) + 3 * np.mean(ms[:-5]) + 2 * np.mean(wfc[:-5])
