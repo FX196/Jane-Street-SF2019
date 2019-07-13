@@ -4,11 +4,11 @@ def trade(exchange):
     adr_buy, adr_sell = exchange.latest_books["VALE"]
 
     try:
-        b_adr = max(adr_buy, key=lambda x: x[0])
-        s_adr = min(adr_sell, key=lambda x: x[0])
+        b_adr = max(adr_buy, key=lambda x: x[0])[0]
+        s_adr = min(adr_sell, key=lambda x: x[0])[0]
 
-        b_ori = max(ori_buy, key=lambda x: x[0])
-        s_ori = min(ori_sell, key=lambda x: x[0])
+        b_ori = max(ori_buy, key=lambda x: x[0])[0]
+        s_ori = min(ori_sell, key=lambda x: x[0])[0]
     except:
         print("Handling None")
         return []
