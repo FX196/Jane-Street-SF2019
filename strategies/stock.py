@@ -12,21 +12,21 @@ def trade(exchange):
 
     for stock in stocks: 
         if data['type'] == 'book' and data['symbol'] == stock:
-            if len(delta_t_history) < 10 or len(total_trade) < 10:
+            if len(delta_t_history[stock]) < 10 or len(total_trade[stock]) < 10:
                 break
             # # comment out the following two
             # tradeOp_gradient = np.gradient(delta_t_history)[-1] # > 0 when concave up
             # value_gradient = np.gradient(total_trade)[-1]
-            average = mean(total_trade)
-            stand_dev = std(total_trade)
-            ema = EMA(delta_t_history)
+            average = np.average(total_trade[stock])
+            stand_dev = np.std(total_trade[stock])
+            ema = EMA(delta_t_history[stock])
 
             print("EMA: ", ema, " average: ", average, " std ", stand_dev)
             # print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
-            if ema > 0 and total_trade[-1] > average + stand_dev * 0.5 and current_holding[stock] > 0:
+            if ema > 0 and total_trade[-1] > average + stand_dev * 0.2 and current_holding[stock] > 0:
                 trades.append(('SELL', stock, int(average + stand_dev * 0.6), current_holding[stock]))
-            elif ema > 0 and total_trade[-1] > average - stand_dev * 0.5: 
+            elif ema > 0 and total_trade[-1] < average - stand_dev * 0.2: 
                 trades.append(('BUY', stock, int(average - stand_dev * 0.4), 100))
 
             # # sell strategies#
