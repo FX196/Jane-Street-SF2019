@@ -117,7 +117,7 @@ class ExchangeConnection:
                             self.current_orders[index] = id, buysell, symbol, price, size - data["size"]
                             break
                 elif msg_type == "trade":
-                    self.trade_prices[data["symbol"]] = data["price"]
+                    self.trade_prices[data["symbol"]].append(data["price"])
                 elif msg_type == "reject":
                     print(data)
                 elif msg_type == "out":
