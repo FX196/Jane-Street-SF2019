@@ -9,7 +9,7 @@ def trade(exchange):
         xlf = exchange.t_now["XLF"][-1]
     except:
         return []
-    if (exchange.t_now["XLF"].shape[0] % 5 != 0):
+    if (len(exchange.t_now["XLF"]) % 5 != 0):
         return []
     if len(bond)<5 or len(gs)<5 or len(ms)<5 or len(wfc)<5:
         return []
