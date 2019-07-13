@@ -14,31 +14,32 @@ def trade(exchange):
         if data['type'] == 'book' and data['symbol'] == stock:
             if len(delta_t_history[stock]) < 10 or len(total_trade[stock]) < 10:
                 break
-            # # comment out the following two
-            # tradeOp_gradient = np.gradient(delta_t_history)[-1] # > 0 when concave up
-            # value_gradient = np.gradient(total_trade)[-1]
+            # comment out the following two
+            tradeOp_gradient = np.gradient(delta_t_history[stock])[-1] # > 0 when concave up
+            value_gradient = np.gradient(total_trade[stock])[-1]
             average = np.average(total_trade[stock])
             stand_dev = np.std(total_trade[stock])
             ema = EMA(delta_t_history[stock])
 
             print("EMA: ", ema, " average: ", average, " std ", stand_dev)
-            # print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
+            print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
-            if ema > 0 and total_trade[stock][-1] > average + stand_dev * 0.2 and current_holding[stock] > 0:
-                trades.append(('SELL', stock, int(average + stand_dev * 0.6), current_holding[stock]))
-            elif ema > 0 and total_trade[stock][-1] < average - stand_dev * 0.2: 
-                trades.append(('BUY', stock, int(average - stand_dev * 0.4), 100))
+            # # for bot
+            # if ema > 0 and total_trade[stock][-1] > average + stand_dev * 0.2 and current_holding[stock] > 0:
+            #     trades.append(('SELL', stock, int(average + stand_dev * 0.6), current_holding[stock]))
+            # elif ema > 0 and total_trade[stock][-1] < average - stand_dev * 0.2: 
+            #     trades.append(('BUY', stock, int(average - stand_dev * 0.4), 100))
 
             # # sell strategies#
-            # if ema > 0 and total_trade[-1] > average + stand_dev * 1.1 and current_holding[stock] > 0 and buy_price[stock] < total_trade[-1]:
-            #     trades.append(('SELL', stock, total_trade[-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock]))
-            # elif ema > 0 and total_trade[-1] > average + stand_dev * 0.5 and current_holding[stock] > 0 and buy_price[stock] < total_trade[-1]:
-            #     trades.append(('SELL', stock, total_trade[-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock] // 2))
+            if ema > 0 and total_trade[stock][-1] > average + stand_dev * 1.1 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
+                trades.append(('SELL', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock]))
+            elif ema > 0 and total_trade[stock][-1] > average + stand_dev * 0.5 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
+                trades.append(('SELL', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[-1], current_holding[stock] // 2))
             
-            # elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[-1] < average - stand_dev * 1.1: 
-            #     trades.append(('BUY', stock, total_trade[-1] + tradeOp_gradient * delta_t_history[-1], 200))
-            # elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[-1] < average - stand_dev * 0.5: 
-            #     trades.append(('BUY', stock, total_trade[-1] + tradeOp_gradient * delta_t_history[-1], 100))
+            elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 1.1: 
+                trades.append(('BUY', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[stock][-1], 200))
+            elif ema > 0 and tradeOp_gradient > 0 and value_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 0.5: 
+                trades.append(('BUY', stock, total_trade[stock][-1] + tradeOp_gradient * delta_t_history[stock][-1], 100))
     # if data['type'] == 'book' and data['symbol'] == 'BOND':
     #     bids = data['buy']
     #     for price, size in bids:
