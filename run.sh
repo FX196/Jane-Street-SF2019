@@ -2,6 +2,6 @@
 
 while True
 do 
-    python main.py;
+    python3 main.py basic_bond -e production;
     sleep 5;
 done
