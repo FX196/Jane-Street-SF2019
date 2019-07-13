@@ -115,6 +115,8 @@ class ExchangeConnection:
                             break
                 elif msg_type == "trade":
                     self.trade_prices[data["symbol"]] = data["price"]
+                elif msg_type == "reject":
+                    print(data)
                 elif msg_type == "out":
                     for index, order in enumerate(self.current_orders):
                         id, buysell, symbol, price, size = order
