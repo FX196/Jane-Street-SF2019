@@ -3,11 +3,15 @@ def trade(exchange):
     ori_buy, ori_sell = exchange.latest_books["VALBZ"]
     adr_buy, adr_sell = exchange.latest_books["VALE"]
 
-    b_adr = max(adr_buy, key=lambda x: x[0])
-    s_adr = min(adr_sell, key=lambda x: x[0])
+    try:
+        b_adr = max(adr_buy, key=lambda x: x[0])
+        s_adr = min(adr_sell, key=lambda x: x[0])
 
-    b_ori = max(ori_buy, key=lambda x: x[0])
-    s_ori = min(ori_sell, key=lambda x: x[0])
+        b_ori = max(ori_buy, key=lambda x: x[0])
+        s_ori = min(ori_sell, key=lambda x: x[0])
+    except:
+        print("Handling None")
+        return []
 
     if s_adr - b_ori > 10:
         size = 1
