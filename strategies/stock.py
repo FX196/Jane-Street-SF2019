@@ -37,10 +37,10 @@ def trade(exchange):
             elif total_trade[stock][-1] > average + stand_dev * 0.3: 
                 trades.append(('SELL', stock, int(average + stand_dev * 0.2), current_holding[stock]))
             elif ema > 0 and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 0.2: 
-                trades.append(('BUY', stock, int(average - stand_dev * 0.4), 100))
+                trades.append(('BUY', stock, int(average - stand_dev * 0.4), 2))
                 buy_price[stock] = int(average - stand_dev * 0.4)
             elif ema > 0 and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev: 
-                trades.append(('BUY', stock, int(average - stand_dev * 1.1), 200))   
+                trades.append(('BUY', stock, int(average - stand_dev * 1.1), 2))   
                 buy_price[stock] = int(average - stand_dev * 0.4) 
 
             # # # sell strategies#
