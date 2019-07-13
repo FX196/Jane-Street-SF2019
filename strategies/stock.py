@@ -6,7 +6,7 @@ def trade(exchange):
     data = exchange.last_data
     delta_t_history = exchange.delta_t
     total_trade = exchange.t_now
-    stocks = ['VALBZ', 'GS', 'MS', 'WFC']
+    stocks = ['GS', 'MS', 'WFC']
     current_holding = exchange.holdings
     buy_price = {} # process buy price when purchase
 
@@ -29,15 +29,20 @@ def trade(exchange):
             # print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
             # # for bot
-            if total_trade[stock][-1] > average + stand_dev and current_holding[stock] > 0 and buy_price[stock] != -1:
-                trades.append(('SELL', stock, int(average + stand_dev * 0.9), current_holding[stock]))
+            if ema < 0 and total_trade[stock][-1] > average and current_holding[stock] > 0:
+                trades.append(('SELL', stock, int(average), 2))
                 current_holding[stock] = 0
-            elif total_trade[stock][-1] > average + stand_dev * 0.5 and buy_price[stock] != -1 and current_holding[stock] > 0:
-                trades.append(('SELL', stock, int(average + stand_dev * 0.3), current_holding[stock] // 2))
-                current_holding[stock] = 0
-            elif total_trade[stock][-1] > average + stand_dev * 0.3: 
-                trades.append(('SELL', stock, int(average), current_holding[stock]))
-                current_holding[stock] = 0
+                buy_price[stock] = -1
+            
+            # if ema < 0 and total_trade[stock][-1] > average + stand_dev and current_holding[stock] > 0 and buy_price[stock] != -1:
+            #     trades.append(('SELL', stock, int(average + stand_dev * 0.9), current_holding[stock]))
+            #     current_holding[stock] = 0
+            # elif ema < 0 and total_trade[stock][-1] > average + stand_dev * 0.5 and buy_price[stock] != -1 and current_holding[stock] > 0:
+            #     trades.append(('SELL', stock, int(average + stand_dev * 0.3), current_holding[stock] // 2))
+            #     current_holding[stock] = 0
+            # elif ema < 0 and total_trade[stock][-1] > average + stand_dev * 0.3: 
+            #     trades.append(('SELL', stock, int(average), current_holding[stock]))
+            #     current_holding[stock] = 0
             elif ema > 0 and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 0.5: 
                 trades.append(('BUY', stock, int(average - stand_dev * 0.3), 5))
                 buy_price[stock] = int(average - stand_dev * 0.3)
