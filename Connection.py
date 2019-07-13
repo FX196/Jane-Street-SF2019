@@ -1,11 +1,13 @@
+import datetime
 import json
 import socket
-import datetime
+
 import numpy as np
 
 
 class ExchangeConnection:
     def __init__(self, exchange, team_name='ALPHASTOCK'):
+        self.counter = 1
         if exchange in ("0", "1", "2"):
             host_name = "test-exch-alphastock"
             port = 25000 + int(exchange)
@@ -42,17 +44,16 @@ class ExchangeConnection:
             "WFC": [None, None],
             "XLF": [None, None]
         }
-        self.trade_prices = {
-            "BOND": None,
-            "VALBZ": None,
-            "VALE": None,
-            "GS": None,
-            "MS": None,
-            "WFC": None,
-            "XLF": None
-        }
 
-        self.time = 0
+        self.trade_prices = {
+            "BOND": [],
+            "VALBZ": [],
+            "VALE": [],
+            "GS": [],
+            "MS": [],
+            "WFC": [],
+            "XLF": []
+        }
         self.delta_t = {}
         self.t_now = {}
 
@@ -78,6 +79,7 @@ class ExchangeConnection:
         np.save("./data/history-{}.npy".format(now.minute), history)
 
     def read(self, store_last=True):  # read from exchange
+        self.counter += 1
         data_str = self.stream.readline()
         if data_str == "":
             return None
@@ -110,7 +112,8 @@ class ExchangeConnection:
                         if data["order_id"] == id:
                             self.current_orders.pop(index)
                             break
-
+        if self.counter % 30 == 0:
+            print(self.holdings)
         return data
 
         # else:
