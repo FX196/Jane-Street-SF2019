@@ -91,10 +91,10 @@ class ExchangeConnection:
             buysell, symbol, price, size = args
             trade = {'type': 'add', 'order_id': self.order_id, 'symbol': symbol,
                      'dir': buysell, 'price': price, 'size': size}
+            self.sent_orders[self.order_id] = (self.order_id, buysell, symbol, price, size)
             self.order_id += 1
             # print(trade)
             self.write(trade)
-            self.sent_orders[self.order_id] = (self.order_id, buysell, symbol, price, size)
         else:
             self.convert(*args[1:])
 
@@ -106,6 +106,8 @@ class ExchangeConnection:
         for buysell, symbol, price, size in trades:
             if buysell and size != 0:
                 self.trade(buysell, symbol, price, size)
+        if self.order_id and self.order_id % 10 == 0:
+            print(self.current_orders)
 
     def convert(self, buysell, symbol, size):
         trade = {'type': 'convert', 'order_id': self.order_id,
