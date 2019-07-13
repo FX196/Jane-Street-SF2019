@@ -1,5 +1,5 @@
-import numpy as np 
-from stats import *
+from strategies.stats import *
+import numpy as np
 
 def trade(exchange):
     trades = []
@@ -20,8 +20,8 @@ def trade(exchange):
             stand_dev = std(total_trade)
             ema = EMA(delta_t_history)
             
-            if total_trade[-1] > average + stand_dev and current_holding[stock] > 0 and buy_price[stock] < total_trade[-1]:
-                trades.append(('SELL', stock, price, size))
+            if ema * value_gradient > 0 and total_trade[-1] > average + stand_dev * 0.7 and current_holding[stock] > 0 and buy_price[stock] < total_trade[-1]:
+                trades.append(('SELL', stock, total_trade[-1] + tradeOp_gradient * delta_t_history[-1], ))
 
             
     

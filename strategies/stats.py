@@ -24,7 +24,7 @@ def visualize(distribution, name):
     n_bins = 20
     plt.hist(distribution, bins=n_bins)
     now = datetime.datetime.now()
-    plt.savefig("figs/{}-{}.png".format(name, now.minute))
+    plt.savefig("../figs/{}-{}.png".format(name, now.minute))
     return dict(zip(unique, counts))
 
 
