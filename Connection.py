@@ -3,7 +3,7 @@ import socket
 
 
 class ExchangeConnection:
-    def __init__(self, exchange, team_name='THREESTINKYCOBBLERS'):
+    def __init__(self, exchange, team_name='ALPHASTOCK'):
         if exchange in ("0", "1", "2"):
             host_name = "test-exch-threestinkycobblers"
             port = 25000 + int(exchange)
@@ -93,9 +93,9 @@ class ExchangeConnection:
             self.order_id += 1
             # print(trade)
             self.write(trade)
+            self.sent_orders[self.order_id] = (self.order_id, buysell, symbol, price, size)
         else:
             self.convert(*args[1:])
-        self.sent_orders[self.order_id] = ()
 
     def cancel(self, order_id):
         cancel = {'type': 'cancel', 'order_id': order_id}
