@@ -103,7 +103,10 @@ class ExchangeConnection:
                 elif msg_type == "ack":
                     # accepted, add to current_orders
                     order_id = data["order_id"]
-                    self.current_orders.append(self.sent_orders.pop(order_id))
+                    try:
+                        self.current_orders.append(self.sent_orders.pop(order_id))
+                    except:
+                        print(end="")
                     if len(self.current_orders) > self.max_orders:
                         # cancel if too many orders
                         self.cancel(self.current_orders[0][0])
