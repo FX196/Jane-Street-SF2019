@@ -10,7 +10,7 @@ def trade(exchange):
         return trades
     ave = 3 * np.mean(bond[-5:]) + 2 * np.mean(gs[:-5]) + 3 * np.mean(ms[:-5]) + 2 * np.mean(wfc[:-5])
     if (xlf < ave):
-        trades.append(("BUG", "XLF", ave, 30))
+        trades.append(("BUY", "XLF", ave, 30))
     else:
         trades.append(("SELL", "XLF", xlf, 30))
     return trades
