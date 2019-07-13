@@ -1,11 +1,13 @@
+import datetime
 import json
 import socket
-import datetime
+
 import numpy as np
 
 
 class ExchangeConnection:
     def __init__(self, exchange, team_name='ALPHASTOCK'):
+        self.counter = 1
         if exchange in ("0", "1", "2"):
             host_name = "test-exch-alphastock"
             port = 25000 + int(exchange)
@@ -26,6 +28,8 @@ class ExchangeConnection:
             self.holdings[symbol_position_pair["symbol"]] = symbol_position_pair["position"]
 
         self.last_data = None
+        
+        self.buy_price = {}
 
         self.filled_orders = []
         self.current_orders = []
@@ -42,16 +46,16 @@ class ExchangeConnection:
             "WFC": [None, None],
             "XLF": [None, None]
         }
+
         self.trade_prices = {
-            "BOND": None,
-            "VALBZ": None,
-            "VALE": None,
-            "GS": None,
-            "MS": None,
-            "WFC": None,
-            "XLF": None
+            "BOND": [],
+            "VALBZ": [],
+            "VALE": [],
+            "GS": [],
+            "MS": [],
+            "WFC": [],
+            "XLF": []
         }
-        self.time = 0
         self.delta_t = {}
         self.t_now = {}
 
@@ -63,7 +67,10 @@ class ExchangeConnection:
         if sell.shape[0] == 0:
             sell = np.array([[0, 0]])
         delta_t_now = np.dot(buy[:, 0], buy[:, 1]) - np.dot(sell[:, 0], sell[:, 1])
-        t = np.average([np.average(buy[:, 0][:10]), np.average(sell[:, 0][:10])])
+        buy_weighted = np.dot(buy[:, 0], buy[:, 1]/(np.sum(buy[:, 1])))
+        sell_weighted = np.dot(sell[:, 0], sell[:, 1]/(np.sum(sell[:, 1])))
+        t = np.average([buy_weighted, sell_weighted])
+        # t = np.average([np.average(buy[:, 0][:10]), np.average(sell[:, 0][:10])])
         if type in self.t_now:
             self.t_now[type].append(t)
         else:
@@ -77,6 +84,7 @@ class ExchangeConnection:
         np.save("./data/history-{}.npy".format(now.minute), history)
 
     def read(self, store_last=True):  # read from exchange
+        self.counter += 1
         data_str = self.stream.readline()
         if data_str == "":
             return None
@@ -109,7 +117,8 @@ class ExchangeConnection:
                         if data["order_id"] == id:
                             self.current_orders.pop(index)
                             break
-
+        if self.counter % 30 == 0:
+            print(self.holdings)
         return data
 
         # else:
