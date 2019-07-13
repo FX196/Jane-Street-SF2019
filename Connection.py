@@ -121,7 +121,7 @@ class ExchangeConnection:
                         if data["order_id"] == id:
                             self.current_orders.pop(index)
                             break
-        if self.counter % 30 == 0:
+        if self.counter % 50 == 0:
             print(self.holdings)
             print(self.current_orders)
         return data
