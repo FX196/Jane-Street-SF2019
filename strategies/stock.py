@@ -26,11 +26,11 @@ def trade(exchange):
             if stock not in current_holding: 
                 current_holding[stock] = -1 
 
-            print("EMA: ", ema, " average: ", average, " std ", stand_dev)
+            print("Stock: ", stock, " EMA: ", ema, " average: ", average, " std ", stand_dev)
             # print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
             # # for bot
-            if ema < 0 and total_trade[stock][-1] > average + stand_dev*0.5 and current_holding[stock] > 0:
+            if tradeOp_gradient < 0 and total_trade[stock][-1] > average + stand_dev*0.5 and current_holding[stock] > 0:
                 if current_holding[stock] %2 == 1: 
                     trades.append(('SELL', stock, int(average + stand_dev*0.3), 1))    
                     current_holding[stock] -= 1
@@ -39,7 +39,7 @@ def trade(exchange):
                     current_holding[stock] -= 2
                 if current_holding[stock] == 0:
                     buy_price[stock] = -1 
-            elif ema < 0 and total_trade[stock][-1] > average and current_holding[stock] > 0:
+            elif tradeOp_gradient < 0 and total_trade[stock][-1] > average and current_holding[stock] > 0:
                 if current_holding[stock] == 1: 
                     trades.append(('SELL', stock, int(average), 1))    
                     current_holding[stock] -= 1
@@ -57,13 +57,13 @@ def trade(exchange):
             # elif ema < 0 and total_trade[stock][-1] > average + stand_dev * 0.3: 
             #     trades.append(('SELL', stock, int(average), current_holding[stock]))
             #     current_holding[stock] = 0
-            elif ema > 0 and total_trade[stock][-1] < average - stand_dev * 0.5: 
+            elif tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 0.5: 
                 if current_holding[stock] >= 20:
                     continue
                 trades.append(('BUY', stock, int(average - stand_dev * 0.3), 2))
                 buy_price[stock] = int(average - stand_dev * 0.3)
                 current_holding[stock] += 2
-            elif ema > 0 and total_trade[stock][-1] < average - stand_dev: 
+            elif tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev: 
                 if current_holding[stock] >= 40:
                     continue
                 trades.append(('BUY', stock, int(average - stand_dev * 0.9), 2))   
