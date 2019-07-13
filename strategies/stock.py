@@ -21,21 +21,26 @@ def trade(exchange):
             stand_dev = np.std(total_trade[stock])
             ema = EMA(delta_t_history[stock])
 
+            if stock not in total_trade:
+                total_trade[stock]=0
+            if stock not in buy_price:
+                buy_price[stock] = -1
+
             print("EMA: ", ema, " average: ", average, " std ", stand_dev)
             print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
             # # for bot
-            if total_trade[stock][-1] > average + stand_dev and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
+            if total_trade[stock][-1] > average + stand_dev and current_holding[stock] > 0 and buy_price[stock] != -1 and buy_price[stock] < total_trade[stock][-1]:
                 trades.append(('SELL', stock, int(average + stand_dev * 0.9), current_holding[stock]))
-            elif total_trade[stock][-1] > average + stand_dev * 0.5 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
+            elif total_trade[stock][-1] > average + stand_dev * 0.5 and buy_price[stock] != -1 and current_holding[stock] > 0 and buy_price[stock] < total_trade[stock][-1]:
                 trades.append(('SELL', stock, int(average + stand_dev * 0.3), current_holding[stock] // 2))
             elif total_trade[stock][-1] > average + stand_dev * 0.3: 
                 trades.append(('SELL', stock, int(average + stand_dev * 0.2), current_holding[stock]))
             elif ema > 0 and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev * 0.2: 
-                trades.append(('BUY', stock, int(average - stand_dev * 0.4), 100))
+                trades.append(('BUY', stock, int(average - stand_dev * 0.4), 2))
                 buy_price[stock] = int(average - stand_dev * 0.4)
             elif ema > 0 and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev: 
-                trades.append(('BUY', stock, int(average - stand_dev * 1.1), 200))   
+                trades.append(('BUY', stock, int(average - stand_dev * 1.1), 2))   
                 buy_price[stock] = int(average - stand_dev * 0.4) 
 
             # # # sell strategies#
