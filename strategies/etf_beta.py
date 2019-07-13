@@ -17,5 +17,5 @@ def trade(exchange):
     if (xlf < ave):
         trades.append(("BUY", "XLF", (int)(1.3*ave), 30))
     else:
-        trades.append(("SELL", "XLF", (int)(0.8*xlf), 30))
+        trades.append(("SELL", "XLF", (int)(xlf), 30))
     return trades
