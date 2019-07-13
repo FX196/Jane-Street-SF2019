@@ -32,7 +32,6 @@ if __name__ == "__main__":
     exchange = args.exchange
 
 
-
     while True:
         try:
             main(strategies, exchange)
@@ -41,5 +40,5 @@ if __name__ == "__main__":
         except socket_error as serr:
             if serr.errno != errno.ECONNREFUSED:
                 raise serr
-            print("Connection Failed, Sleeping...")
+            print("Connection Failed, Sleeping...")  
             time.sleep(1)
