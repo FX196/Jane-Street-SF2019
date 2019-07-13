@@ -18,12 +18,12 @@ def trade(exchange):
 
     diff = adr_estimate - ori_estimate
     if diff > 10:
-        size = int(diff/10)
+        size = 1
         trades.append(("BUY", "VALBZ", int(ori_estimate + 1), size))
         trades.append(("CONVERT", "BUY", "VALE", size))
         trades.append(("SELL", "VALE", int(adr_estimate - 1), size))
     elif diff < 10:
-        size = int(diff/10)
+        size = 1
         trades.append(("SELL", "VALBZ", int(ori_estimate + 1), size))
         trades.append(("CONVERT", "SELL", "VALE", size))
         trades.append(("BUY", "VALE", int(adr_estimate - 1), size))
