@@ -28,6 +28,7 @@ class ExchangeConnection:
         self.filled_orders = []
         self.current_orders = []
         self.sent_orders = {}
+        self.max_orders = 10
 
         self.order_id = 0
         self.latest_books = {
@@ -38,6 +39,15 @@ class ExchangeConnection:
             "MS": [None, None],
             "WFC": [None, None],
             "XLF": [None, None]
+        }
+        self.trade_prices = {
+            "BOND": None,
+            "VALBZ": None,
+            "VALE": None,
+            "GS": None,
+            "MS": None,
+            "WFC": None,
+            "XLF": None
         }
         self.time = 0
 
@@ -56,9 +66,23 @@ class ExchangeConnection:
                     # accepted, add to current_orders
                     order_id = data["order_id"]
                     self.current_orders.append(self.sent_orders.pop(order_id))
+                    if len(self.current_orders) > self.max_orders:
+                        # cancel if too many orders
+                        self.cancel(self.current_orders[0][0])
                 elif msg_type == "fill":
-                    for order in self.current_orders:
-                        pass
+                    for index, order in enumerate(self.current_orders):
+                        id, buysell, symbol, price, size = order
+                        if data["order_id"] == id:
+                            self.current_orders[size] -= data["size"]
+                            break
+                elif msg_type == "trade":
+                    self.trade_prices[data["symbol"]] = data["price"]
+                elif msg_type == "out":
+                    for index, order in enumerate(self.current_orders):
+                        id, buysell, symbol, price, size = order
+                        if data["order_id"] == id:
+                            self.current_orders.pop(index)
+                            break
         return data
 
         # else:
