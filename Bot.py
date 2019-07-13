@@ -23,7 +23,7 @@ class Bot:
         """
         data = self.exchange.read()
         while data:
-            self.file_obj.write(data)
+            #self.file_obj.write(data)
             trades = []
             for strategy in self.strategies:
                 trades.extend(strategy.trade(self.exchange))
