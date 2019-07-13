@@ -29,6 +29,7 @@ def visualize(distribution, name):
 
 
 def EMA(past_data, beta=0.7, t_length=10):
+    t_length = min(len(past_data), t_length)
     v = beta ** np.arange(0, t_length)
     v = np.flip(v)
     return np.array(past_data[-t_length:]).dot(v)
