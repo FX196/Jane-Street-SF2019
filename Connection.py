@@ -5,7 +5,7 @@ import socket
 class ExchangeConnection:
     def __init__(self, exchange, team_name='ALPHASTOCK'):
         if exchange in ("0", "1", "2"):
-            host_name = "test-exch-threestinkycobblers"
+            host_name = "test-exch-alphastock"
             port = 25000 + int(exchange)
 
         else:
@@ -58,7 +58,7 @@ class ExchangeConnection:
                     self.current_orders.append(self.sent_orders.pop(order_id))
                 elif msg_type == "fill":
                     for order in self.current_orders:
-                        pass
+
 
         # else:
         #     data = json.loads(data)
