@@ -94,7 +94,7 @@ class ExchangeConnection:
                     for index, order in enumerate(self.current_orders):
                         id, buysell, symbol, price, size = order
                         if data["order_id"] == id:
-                            self.current_orders[size] -= data["size"]
+                            self.current_orders[id] -= data["size"]
                             break
                 elif msg_type == "trade":
                     self.trade_prices[data["symbol"]] = data["price"]
