@@ -34,7 +34,7 @@ class ExchangeConnection:
         self.filled_orders = []
         self.current_orders = []
         self.sent_orders = {}
-        self.max_orders = 10
+        self.max_orders = 25
 
         self.order_id = 1
         self.latest_books = {
@@ -115,13 +115,15 @@ class ExchangeConnection:
                             break
                 elif msg_type == "trade":
                     self.trade_prices[data["symbol"]] = data["price"]
+                elif msg_type == "reject":
+                    print(data)
                 elif msg_type == "out":
                     for index, order in enumerate(self.current_orders):
                         id, buysell, symbol, price, size = order
                         if data["order_id"] == id:
                             self.current_orders.pop(index)
                             break
-        if self.counter % 50 == 0:
+        if self.counter % 200 == 0:
             print(self.holdings)
             print(self.current_orders)
             print(self.sent_orders)
@@ -172,12 +174,9 @@ class ExchangeConnection:
         for buysell, symbol, price, size in trades:
             if buysell and size != 0:
                 self.trade(buysell, symbol, price, size)
-        if self.order_id % 10 == 0:
-            print(self.current_orders)
 
     def convert(self, buysell, symbol, size):
         trade = {'type': 'convert', 'order_id': self.order_id,
                  'symbol': symbol, 'dir': buysell, 'size': size}
         self.order_id += 1
-        # print(trade)
         self.write(trade)
