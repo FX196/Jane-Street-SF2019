@@ -53,7 +53,8 @@ class ExchangeConnection:
             "WFC": [],
             "XLF": []
         }
-        self.time = 0
+
+        self.counter = 0
         self.delta_t = {}
         self.t_now = {}
 
@@ -79,7 +80,7 @@ class ExchangeConnection:
         np.save("./data/history-{}.npy".format(now.minute), history)
 
     def read(self, store_last=True):  # read from exchange
-        self.time += 1
+        self.counter += 1
         data_str = self.stream.readline()
         if data_str == "":
             return None
@@ -112,7 +113,7 @@ class ExchangeConnection:
                         if data["order_id"] == id:
                             self.current_orders.pop(index)
                             break
-        if self.time % 30 == 0:
+        if self.counter % 30 == 0:
             print(self.holdings)
         return data
 
