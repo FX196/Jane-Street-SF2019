@@ -58,7 +58,8 @@ class ExchangeConnection:
                     self.current_orders.append(self.sent_orders.pop(order_id))
                 elif msg_type == "fill":
                     for order in self.current_orders:
-
+                        pass
+        return data
 
         # else:
         #     data = json.loads(data)
