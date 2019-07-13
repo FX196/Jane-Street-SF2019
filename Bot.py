@@ -14,7 +14,6 @@ class Bot:
         self.exchange = exchange
         self.strategies = [import_module(strategy) for strategy in strategies]
         self.filename = "data_"+str(time.strftime("%H:%M:%S", time.gmtime()))
-        self.file_obj = open(self.filename, "w")
 
     def run(self):
         """
