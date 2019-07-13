@@ -124,7 +124,6 @@ class ExchangeConnection:
         if self.counter % 50 == 0:
             print(self.holdings)
             print(self.current_orders)
-            print(self.sent_orders)
         return data
 
         # else:

@@ -20,7 +20,7 @@ def trade(exchange):
         trades.append(("CONVERT", "BUY", "VALE", size))
         trades.append(("SELL", "VALE", adr_estimate - 1, size))
     elif diff < 0:
-        size = (diff / 0.1) * 2
+        size = (-diff / 0.1) * 2
         trades.append(("SELL", "VALBZ", ori_estimate + 1, size))
         trades.append(("CONVERT", "SELL", "VALE", size))
         trades.append(("BUY", "VALE", adr_estimate - 1, size))
