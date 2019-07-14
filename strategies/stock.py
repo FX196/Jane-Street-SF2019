@@ -6,7 +6,7 @@ def trade(exchange):
     data = exchange.last_data
     delta_t_history = exchange.delta_t
     total_trade = exchange.t_now
-    stocks = ['MS', 'WFC']
+    stocks = ['GS', 'MS']
     current_holding = exchange.holdings
     buy_price = {} # process buy price when purchase
 
