@@ -14,7 +14,7 @@ def trade(exchange):
         if data['type'] == 'book' and data['symbol'] == stock:
             if len(delta_t_history[stock]) < 100 or len(total_trade[stock]) < 100:
                 break
-            if stock == 'MS' and len(data[stock]) < 1000:
+            if stock == 'GS' and len(data[stock]) < 1000:
                 continue
             # comment out the following two
             tradeOp_gradient = np.gradient(delta_t_history[stock])[-1] # > 0 when concave up
