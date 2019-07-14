@@ -48,7 +48,7 @@ def trade(exchange):
         # # for bot
         if (value_gradient > 0 or tradeOp_gradient < 0) and total_trade[stock][-1] > average + stand_dev*f1 and current_holding[stock] > 0:
             if current_holding[stock] <= -20:
-                continue
+                return []
             if current_holding[stock] %2 == 1: 
                 trades.append(('SELL', stock, int(average + stand_dev*d1), 1))    
                 current_holding[stock] -= 1
@@ -59,7 +59,7 @@ def trade(exchange):
                 buy_price[stock] = -1 
         elif (value_gradient > 0 or tradeOp_gradient < 0) and total_trade[stock][-1] > average*f2 and current_holding[stock] > 0:
             if current_holding[stock] <= -20:
-                continue
+                return []
             if current_holding[stock] == 1: 
                 trades.append(('SELL', stock, int(average + stand_dev*d2), 1))    
                 current_holding[stock] -= 1
@@ -71,13 +71,13 @@ def trade(exchange):
         
         elif (value_gradient > 0 or ema > 0) and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev * f3: 
             if current_holding[stock] >= 20:
-                continue
+                return []
             trades.append(('BUY', stock, int(average - stand_dev * b1), 2))
             buy_price[stock] = int(average - stand_dev * b1)
             current_holding[stock] += 2
         elif (value_gradient > 0 or ema > 0) and tradeOp_gradient > 0 and total_trade[stock][-1] < average - stand_dev * f4: 
             if current_holding[stock] >= 40:
-                continue
+                return []
             trades.append(('BUY', stock, int(average - stand_dev * b2), 2))   
             buy_price[stock] = int(average - stand_dev * b2) 
             current_holding[stock] += 2
