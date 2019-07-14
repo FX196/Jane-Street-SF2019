@@ -6,13 +6,15 @@ def trade(exchange):
     data = exchange.last_data
     delta_t_history = exchange.delta_t
     total_trade = exchange.t_now
-    stocks = ['GS', 'MS', 'WFC']
+    stocks = ['VALBZ', 'GS', 'MS', 'WFC']
     current_holding = exchange.holdings
     buy_price = {} # process buy price when purchase
 
     for stock in stocks: 
         if data['type'] == 'book' and data['symbol'] == stock:
             if len(delta_t_history[stock]) < 100 or len(total_trade[stock]) < 100:
+                break
+            if stock == 'GS' and len(delta_t_history[stock]) < 1000 or len(total_trade[stock]) < 1000:
                 break
             # comment out the following two
             tradeOp_gradient = np.gradient(delta_t_history[stock])[-1] # > 0 when concave up
