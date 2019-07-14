@@ -40,7 +40,7 @@ def trade(exchange):
             print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
             # # for bot
-            if (value_gradient < 0 or tradeOp_gradient < 0) or total_trade[stock][-1] > average + stand_dev*f1 and current_holding[stock] > 0:
+            if (value_gradient > 0 or tradeOp_gradient < 0) and total_trade[stock][-1] > average + stand_dev*f1 and current_holding[stock] > 0:
                 if current_holding[stock] <= -20:
                     continue
                 if current_holding[stock] %2 == 1: 
@@ -51,7 +51,7 @@ def trade(exchange):
                     current_holding[stock] -= 2
                 if current_holding[stock] == 0:
                     buy_price[stock] = -1 
-            elif (value_gradient < 0 or tradeOp_gradient < 0) or total_trade[stock][-1] > average*f2 and current_holding[stock] > 0:
+            elif (value_gradient > 0 or tradeOp_gradient < 0) and total_trade[stock][-1] > average*f2 and current_holding[stock] > 0:
                 if current_holding[stock] <= -20:
                     continue
                 if current_holding[stock] == 1: 
