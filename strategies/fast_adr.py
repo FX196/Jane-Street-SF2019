@@ -15,13 +15,13 @@ def trade(exchange):
 
     if s_adr - b_ori > 10:
         size = 1
-        trades.append(("BUY", "VALBZ", b_ori + 1, size))
+        trades.append(("BUY", "VALBZ", b_ori, size))
         trades.append(("CONVERT", "BUY", "VALE", size))
-        trades.append(("SELL", "VALE", s_adr - 1, size + exchange.holdings["VALE"]))
+        trades.append(("SELL", "VALE", s_adr, size + exchange.holdings["VALE"]))
     elif s_ori - b_adr > 10:
         size = 1
-        trades.append(("SELL", "VALBZ", s_ori - 1, size + exchange.holdings["VALBZ"]))
+        trades.append(("SELL", "VALBZ", s_ori, size + exchange.holdings["VALBZ"]))
         trades.append(("CONVERT", "SELL", "VALE", size))
-        trades.append(("BUY", "VALE", b_adr + 1, size))
+        trades.append(("BUY", "VALE", b_adr, size))
 
     return trades
