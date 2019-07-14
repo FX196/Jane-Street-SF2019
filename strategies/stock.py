@@ -24,7 +24,7 @@ def trade(exchange):
             ema = EMA(delta_t_history[stock])
 
             
-            if stock == 'MS' and len(total_trade[stock]) < 1000:
+            if stock == 'MS' and len(total_trade[stock]) < 500:
                 continue
 
             if stand_dev > 5:
