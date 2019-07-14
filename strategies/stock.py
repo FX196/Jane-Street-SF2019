@@ -14,7 +14,7 @@ def trade(exchange):
         if data['type'] == 'book' and data['symbol'] == stock:
             if len(delta_t_history[stock]) < 100 or len(total_trade[stock]) < 100:
                 break
-            if stock == 'GS' and len(data[stock]) < 1000:
+            if stock == 'MS' and len(data[stock]) < 1000:
                 continue
             # comment out the following two
             tradeOp_gradient = np.gradient(delta_t_history[stock])[-1] # > 0 when concave up
@@ -64,26 +64,6 @@ def trade(exchange):
                     current_holding[stock] -= 2
                 if current_holding[stock] == 0:
                     buy_price[stock] = -1         
-            elif (value_gradient > 0 and tradeOp_gradient > 0 and ema > 0) or total_trade[stock][-1] < average and current_holding[stock] > 0:
-                if current_holding[stock] >= 20:
-                    continue
-                if current_holding[stock] == 1: 
-                    trades.append(('BUY', stock, int(average), 1))    
-                    current_holding[stock] -= 1
-                else:
-                    trades.append(('BUY', stock, int(average), 2))
-                    current_holding[stock] -= 2
-                if current_holding[stock] == 0:
-                    buy_price[stock] = -1 
-            # if ema < 0 and total_trade[stock][-1] > average + stand_dev and current_holding[stock] > 0 and buy_price[stock] != -1:
-            #     trades.append(('SELL', stock, int(average + stand_dev * 0.9), current_holding[stock]))
-            #     current_holding[stock] = 0
-            # elif ema < 0 and total_trade[stock][-1] > average + stand_dev * 0.5 and buy_price[stock] != -1 and current_holding[stock] > 0:
-            #     trades.append(('SELL', stock, int(average + stand_dev * 0.3), current_holding[stock] // 2))
-            #     current_holding[stock] = 0
-            # elif ema < 0 and total_trade[stock][-1] > average + stand_dev * 0.3: 
-            #     trades.append(('SELL', stock, int(average), current_holding[stock]))
-            #     current_holding[stock] = 0
             elif (value_gradient > 0 and tradeOp_gradient > 0 and ema > 0) and total_trade[stock][-1] < average - stand_dev * f3: 
                 if current_holding[stock] >= 20:
                     continue
