@@ -37,7 +37,7 @@ def trade(exchange):
                 current_holding[stock] = -1 
 
             print("Stock: ", stock, " EMA: ", ema, " average: ", average, " std ", stand_dev)
-            print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
+            # print("value_gradient: ", value_gradient, " tradeOp_gradient: ", tradeOp_gradient)
             
             # # for bot
             if (ema < 0) or total_trade[stock][-1] > average + stand_dev*f1 and current_holding[stock] > 0:
