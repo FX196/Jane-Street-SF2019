@@ -12,16 +12,18 @@ def trade(exchange):
 
     for stock in stocks: 
         if data['type'] == 'book' and data['symbol'] == stock:
-            if len(delta_t_history[stock]) < 100 or len(total_trade[stock]) < 100:
-                break
-            if stock == 'MS' and len(total_trade[stock]) < 1000:
-                continue
+            
             # comment out the following two
             tradeOp_gradient = np.gradient(delta_t_history[stock])[-1] # > 0 when concave up
             value_gradient = np.gradient(total_trade[stock])[-1]
             average = np.average(total_trade[stock])
             stand_dev = np.std(total_trade[stock])
             ema = EMA(delta_t_history[stock])
+
+            if len(delta_t_history[stock]) < 100 or len(total_trade[stock]) < 100:
+                break
+            if stock == 'MS' and len(total_trade[stock]) < 1000:
+                continue
 
             if stand_dev > 5:
                 f1, f2 = 0.03, 0.05
